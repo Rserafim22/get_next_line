@@ -1,93 +1,91 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rserafim <rserafim@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/04 10:07:59 by rserafim          #+#    #+#             */
+/*   Updated: 2022/02/04 13:38:00 by rserafim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *str)
+size_t  ft_strlen(const char *s)
 {
-	size_t	i;
+    size_t  i;
 
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
+    i = 0;
+    while (s[i])
+        i++;
+    return (i);
 }
-
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char const *s2) /*alloue une chaine qui contient s1 et s2*/
 {
-	char	*str;
-	int	i;
-	size_t	len;
+    int     len;
+    int     i;
+    int     j;
+    char    *res;
 
-	len = 0;
-	if (s1 != NULL)
-		len = ft_strlen(s1);
-	if (s2 != NULL)
-		len += ft_strlen(s2);
-	str = malloc(sizeof(char) * (len + 1));
-	if (!str)
-		return (NULL);
-	len = 0;
-	while (s1 && s1[len])
-	{
-		str[len] = s1[len];
-		len++;
-	}
-	i = 0;
-	while (s2 && s2[i])
-		str[len++] = s2[i++];
-	str[len] = '\0';
-	return (str);
+    i = 0;
+    j = 0;
+    len = ft_strlen(s1) + ft_strlen(s2);
+    res = (char *)malloc(len + 1);
+    if (!res)
+        return (NULL);
+    while (s1[j])
+        res[i++] = s1[j++];
+    j = 0;
+    while (s2[j])
+        res[i++] = s2[j++];
+    res[i] = '\0';
+    return (res);
 }
-
-char	*ft_strchr(const char *str, int c)
+char	*ft_strchr(const char *str, int c) /*cherche c dans la str*/
 {
-	while (*str)
-	{
-		if (*str == (char)c)
-			return ((char *)str);
-		str++;
-	}
-	if (!*str && !c)
-		return((char *)str);
-	return (NULL);
+    int i;
+
+    i = 0;
+    while (i < (int)ft_strlen(str) + 1)
+    {
+        if (str[i] == (char)c)
+            return ((char *)str + i);
+        i++;
+    }
+    return (NULL);
 }
-
-char	*ft_sort(char *buf, int *ret)
+char	*ft_strdup(char *s1) /*alloue une nouvelle chaine a partir de s1*/
 {
-	int	i;
-	char	*dest;
-
-	i = 0;
-	while (buf && buf[i] && buf[i] != '\n')
-		i++;
-	dest = malloc(sizeof(char) *(i + 1));
-	if (!dest)
-		return (NULL);
-	i = 0;
-	if (ft_strchr(buf, '\n') != 0)
-		*ret = 1;
-	while (buf && buf[i] && buf[i] != '\n')
-	{
-		dest[i] = buf[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
+    int len;
+    int i;
+    char *str;
+    
+    i = -1;
+    len = ft_strlen(s1);
+    str = (char *)malloc(len + 1);
+    if (!str)
+        return (NULL);
+    while (++i < len)
+        str[i] = s1[i];
+    str[i] = '\0';
+    return (str);
 }
-
-char	*ft_sort2(char *buf)
+char	*ft_substr(const char *str, unsigned int start, size_t len) /*alloue une nouvelle chaine contenant LEN characteres depuis START*/
 {
-	int	i;
-	int	j;
-	char	*dest;
+    size_t  i;
+    char    *s;
 
-	i = 0;
-	while (buf && buf[i] && buf[i] != '\n')
-		i++;
-	dest = malloc(sizeof(char) * (ft_strlen(buf) - i + 1));
-	if (!dest)
-		return (NULL);
-	j = 0;
-	while (buf && buf[i])
-		dest[j++] = buf[++i];
-	dest[j] = '\0';
-	return (dest);
+    i = -1;
+    if (!str)
+        return (NULL);
+    if (len > ft_strlen(str))
+        len = ft_strlen(str);
+    s = malloc(sizeof(char) * (len + 1));
+    if (!s)
+        return (NULL);
+    while (++i < len && start < ft_strlen(str))
+        s[i] = str[start++];
+    s[i] = '\0';
+    return (s);
 }
